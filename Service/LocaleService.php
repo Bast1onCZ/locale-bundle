@@ -8,7 +8,6 @@ use BastSys\LanguageBundle\Exception\UnknownLocaleException;
 use BastSys\LanguageBundle\Repository\CountryRepository;
 use BastSys\LanguageBundle\Repository\LanguageRepository;
 use BastSys\LanguageBundle\Structure\Locale;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 
 /**
  * Class LocaleService
@@ -21,8 +20,6 @@ class LocaleService implements ILocaleService
     private $languageRepo;
     /** @var CountryRepository */
     private $countryRepo;
-    /** @var Translator */
-    private $translator;
 
     /** @var Locale */
     private $currentLocale;
@@ -39,14 +36,12 @@ class LocaleService implements ILocaleService
      * @param LanguageRepository $languageRepo
      * @param CountryRepository $countryRepo
      * @param string $defaultLocale
-     * @param Translator $translator
      */
-    public function __construct(LanguageRepository $languageRepo, CountryRepository $countryRepo, string $defaultLocale, Translator $translator)
+    public function __construct(LanguageRepository $languageRepo, CountryRepository $countryRepo, string $defaultLocale)
     {
         $this->languageRepo = $languageRepo;
         $this->countryRepo = $countryRepo;
         $this->currentLocale = new Locale($defaultLocale);
-        $this->translator = $translator;
     }
 
     /**
