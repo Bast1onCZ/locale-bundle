@@ -5,4 +5,4 @@ services:
             - '@bastsys.language_bundle.service.locale'
             - '@bastsys.language_bundle.repository.language'
         tags:
-            - {name: doctrine.event_subscriber}
+            - {name: doctrine.event_subscriber, connection: default}

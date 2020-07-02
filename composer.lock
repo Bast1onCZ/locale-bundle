@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "b67158ac10463e4c2f4171778602d24e",
+  "content-hash": "36e9b9ec60039eae8183e37b6ce9fc9e",
   "packages": [
     {
       "name": "bastsys/utils-bundle",
@@ -3631,6 +3631,63 @@
         "validator"
       ],
       "time": "2020-06-15T11:50:15+00:00"
+    },
+    {
+      "name": "symfony/proxy-manager-bridge",
+      "version": "v5.1.2",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/symfony/proxy-manager-bridge.git",
+        "reference": "65f834babc07abe54c8e0f5bb5cb01f953480953"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/symfony/proxy-manager-bridge/zipball/65f834babc07abe54c8e0f5bb5cb01f953480953",
+        "reference": "65f834babc07abe54c8e0f5bb5cb01f953480953",
+        "shasum": ""
+      },
+      "require": {
+        "ocramius/proxy-manager": "~2.1",
+        "php": ">=7.2.5",
+        "symfony/dependency-injection": "^5.0"
+      },
+      "conflict": {
+        "zendframework/zend-eventmanager": "2.6.0"
+      },
+      "require-dev": {
+        "symfony/config": "^4.4|^5.0"
+      },
+      "type": "symfony-bridge",
+      "extra": {
+        "branch-alias": {
+          "dev-master": "5.1-dev"
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "Symfony\\Bridge\\ProxyManager\\": ""
+        },
+        "exclude-from-classmap": [
+          "/Tests/"
+        ]
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "Fabien Potencier",
+          "email": "fabien@symfony.com"
+        },
+        {
+          "name": "Symfony Community",
+          "homepage": "https://symfony.com/contributors"
+        }
+      ],
+      "description": "Symfony ProxyManager Bridge",
+      "homepage": "https://symfony.com",
+      "time": "2020-05-20T17:43:50+00:00"
     },
     {
       "name": "symfony/routing",

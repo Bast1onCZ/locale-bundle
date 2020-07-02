@@ -1,6 +1,7 @@
 services:
     bastsys.language_bundle.service.locale:
         class: BastSys\LanguageBundle\Service\LocaleService
+        lazy: true
         arguments:
             - '@bastsys.language_bundle.repository.language'
             - '@bastsys.language_bundle.repository.country'
