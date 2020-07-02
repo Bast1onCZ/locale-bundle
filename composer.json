@@ -16,7 +16,8 @@
     "symfony/orm-pack": "^1.0",
     "bastsys/utils-bundle": "^1.1",
     "doctrine/annotations": "^1.10",
-    "symfony/proxy-manager-bridge": "^5.1"
+    "symfony/proxy-manager-bridge": "^5.1",
+    "symfony/asset": "^5.1"
   },
   "autoload": {
     "psr-4": {

@@ -6,8 +6,8 @@ use BastSys\LocaleBundle\Entity\Currency\Currency;
 use BastSys\LocaleBundle\Entity\Language\Language;
 use BastSys\LocaleBundle\Entity\Translation\ITranslatable;
 use BastSys\LocaleBundle\Entity\Translation\TTranslatable;
+use BastSys\LocaleBundle\Service\CountryFlagService;
 use BastSys\UtilsBundle\Entity\Identification\IIdentifiableEntity;
-use BastSys\UtilsBundle\Exception\NotImplementedException;
 use BastSys\UtilsBundle\Model\IEquatable;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -51,6 +51,11 @@ class Country implements IIdentifiableEntity, IEquatable, ITranslatable
     private $currency;
 
     /**
+     * @var CountryFlagService|null injected on postLoad or postPersist
+     */
+    private ?CountryFlagService $flagService;
+
+    /**
      * @var Language
      * @ORM\ManyToOne(targetEntity="BastSys\LocaleBundle\Entity\Language\Language", inversedBy="mainSpeakingCountries", fetch="EXTRA_LAZY")
      */
@@ -63,6 +68,14 @@ class Country implements IIdentifiableEntity, IEquatable, ITranslatable
     public function __construct()
     {
         $this->initTranslatable();
+    }
+
+    /**
+     * @param CountryFlagService $flagService
+     */
+    public function feed(CountryFlagService $flagService)
+    {
+        $this->flagService = $flagService;
     }
 
     /**
@@ -124,12 +137,10 @@ class Country implements IIdentifiableEntity, IEquatable, ITranslatable
 
     /**
      * @return string
-     * @throws NotImplementedException
      */
     public function getFlagLink(): string
     {
-        // TODO: implement this
-        throw new NotImplementedException();
+        return $this->flagService->generateFlagUrl($this);
     }
 
     /**

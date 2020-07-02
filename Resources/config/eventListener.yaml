@@ -1,4 +1,11 @@
 services:
+    bastsys.language_bundle.event_listener.country.feed:
+        class: BastSys\LocaleBundle\EventListener\Country\CountryFeedListener
+        arguments:
+            - '@bastsys.language_bundle.service.country_flag'
+        tags:
+            - {name: kernel.event_listener, event: postPersist}
+            - {name: kernel.event_listener, event: postLoad}
     bastsys.language_bundle.event_listener.translation:
         class: BastSys\LocaleBundle\EventListener\TranslationListener
         arguments:

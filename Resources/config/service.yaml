@@ -6,3 +6,7 @@ services:
             - '@bastsys.language_bundle.repository.language'
             - '@bastsys.language_bundle.repository.country'
             - '%bastsys.language_bundle.locale.default%'
+    bastsys.language_bundle.service.country_flag:
+        class: BastSys\LocaleBundle\Service\CountryFlagService
+        arguments:
+            - '@assets.packages'
