@@ -1,15 +1,15 @@
 <?php
 
-namespace BastSys\LanguageBundle\Entity\Language;
+namespace BastSys\LocaleBundle\Entity\Language;
 
-use BastSys\LanguageBundle\Entity\Country\Country;
-use BastSys\LanguageBundle\Entity\Translation\TTranslatable;
+use BastSys\LocaleBundle\Entity\Country\Country;
+use BastSys\LocaleBundle\Entity\Translation\TTranslatable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Language
- * @package BastSys\LanguageBundle\Entity\Language
+ * @package BastSys\LocaleBundle\Entity\Language
  * @author mirkl
  *
  * @ORM\Entity()
@@ -31,7 +31,7 @@ class Language
 
     /**
      * @var ArrayCollection|Country[]
-     * @ORM\OneToMany(targetEntity="BastSys\LanguageBundle\Entity\Country\Country", mappedBy="mainLanguage")
+     * @ORM\OneToMany(targetEntity="BastSys\LocaleBundle\Entity\Country\Country", mappedBy="mainLanguage")
      */
     private $mainSpeakingCountries;
 

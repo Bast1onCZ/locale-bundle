@@ -2,10 +2,10 @@
 
 namespace BastSys\LocaleBundle\EventListener;
 
-use BastSys\LanguageBundle\Entity\Translation\ITranslatable;
-use BastSys\LanguageBundle\Entity\Translation\ITranslation;
-use BastSys\LanguageBundle\Repository\LanguageRepository;
-use BastSys\LanguageBundle\Service\ILocaleService;
+use BastSys\LocaleBundle\Entity\Translation\ITranslatable;
+use BastSys\LocaleBundle\Entity\Translation\ITranslation;
+use BastSys\LocaleBundle\Repository\LanguageRepository;
+use BastSys\LocaleBundle\Service\ILocaleService;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;

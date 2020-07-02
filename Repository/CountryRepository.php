@@ -1,8 +1,8 @@
 <?php
 
-namespace BastSys\LanguageBundle\Repository;
+namespace BastSys\LocaleBundle\Repository;
 
-use BastSys\LanguageBundle\Entity\Country\Country;
+use BastSys\LocaleBundle\Entity\Country\Country;
 use BastSys\UtilsBundle\Exception\Entity\EntityNotFoundByIdException;
 use BastSys\UtilsBundle\Repository\AEntityRepository;
 use BastSys\UtilsBundle\Repository\FetchAllRepository\IFetchAllRepository;
@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class CountryRepository
- * @package BastSys\LanguageBundle\Repository
+ * @package BastSys\LocaleBundle\Repository
  * @author mirkl
  */
 class CountryRepository extends AEntityRepository implements IFetchAllRepository

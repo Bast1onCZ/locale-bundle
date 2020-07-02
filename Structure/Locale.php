@@ -1,6 +1,6 @@
 <?php
 
-namespace BastSys\LanguageBundle\Structure;
+namespace BastSys\LocaleBundle\Structure;
 
 use BastSys\UtilsBundle\Model\IEquatable;
 

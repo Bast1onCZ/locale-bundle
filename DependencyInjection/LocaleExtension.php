@@ -1,6 +1,6 @@
 <?php
 
-namespace BastSys\LanguageBundle\DependencyInjection;
+namespace BastSys\LocaleBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * Class LanguageExtension
- * @package BastSys\LanguageBundle\DependencyInjection
+ * @package BastSys\LocaleBundle\DependencyInjection
  * @author mirkl
  */
 class LocaleExtension extends Extension

@@ -1,13 +1,13 @@
 <?php
 
-namespace BastSys\LanguageBundle\DependencyInjection;
+namespace BastSys\LocaleBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Class LocaleConfiguration
- * @package BastSys\LanguageBundle\DependencyInjection
+ * @package BastSys\LocaleBundle\DependencyInjection
  * @author mirkl
  */
 class LocaleConfiguration implements ConfigurationInterface

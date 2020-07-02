@@ -1,10 +1,10 @@
 <?php
 
-namespace BastSys\LanguageBundle\Exception;
+namespace BastSys\LocaleBundle\Exception;
 
 /**
  * Class UnknownLocaleException
- * @package BastSys\LanguageBundle\Exception
+ * @package BastSys\LocaleBundle\Exception
  * @author mirkl
  */
 class UnknownLocaleException extends \Exception

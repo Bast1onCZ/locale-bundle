@@ -1,18 +1,18 @@
 <?php
 
-namespace BastSys\LanguageBundle\Entity\Translation;
+namespace BastSys\LocaleBundle\Entity\Translation;
 
-use BastSys\LanguageBundle\Entity\Language\Language;
-use BastSys\LanguageBundle\Repository\LanguageRepository;
-use BastSys\LanguageBundle\Service\ILocaleService;
-use BastSys\LanguageBundle\Structure\Locale;
+use BastSys\LocaleBundle\Entity\Language\Language;
+use BastSys\LocaleBundle\Repository\LanguageRepository;
+use BastSys\LocaleBundle\Service\ILocaleService;
+use BastSys\LocaleBundle\Structure\Locale;
 use BastSys\UtilsBundle\Exception\TraitNotImplementingInterfaceException;
 use BastSys\UtilsBundle\Model\Strings;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Trait TTranslatable
- * @package BastSys\LanguageBundle\Entity
+ * @package BastSys\LocaleBundle\Entity
  */
 trait TTranslatable
 {

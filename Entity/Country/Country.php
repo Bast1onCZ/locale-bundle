@@ -1,11 +1,11 @@
 <?php
 
-namespace BastSys\LanguageBundle\Entity\Country;
+namespace BastSys\LocaleBundle\Entity\Country;
 
-use BastSys\LanguageBundle\Entity\Currency\Currency;
-use BastSys\LanguageBundle\Entity\Language\Language;
-use BastSys\LanguageBundle\Entity\Translation\ITranslatable;
-use BastSys\LanguageBundle\Entity\Translation\TTranslatable;
+use BastSys\LocaleBundle\Entity\Currency\Currency;
+use BastSys\LocaleBundle\Entity\Language\Language;
+use BastSys\LocaleBundle\Entity\Translation\ITranslatable;
+use BastSys\LocaleBundle\Entity\Translation\TTranslatable;
 use BastSys\UtilsBundle\Entity\Identification\IIdentifiableEntity;
 use BastSys\UtilsBundle\Exception\NotImplementedException;
 use BastSys\UtilsBundle\Model\IEquatable;
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Country
- * @package BastSys\LanguageBundle\Entity\Country
+ * @package BastSys\LocaleBundle\Entity\Country
  * @author mirkl
  *
  * @ORM\Entity()
@@ -46,13 +46,13 @@ class Country implements IIdentifiableEntity, IEquatable, ITranslatable
 
     /**
      * @var Currency
-     * @ORM\ManyToOne(targetEntity="BastSys\LanguageBundle\Entity\Currency\Currency", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="BastSys\LocaleBundle\Entity\Currency\Currency", fetch="EXTRA_LAZY")
      */
     private $currency;
 
     /**
      * @var Language
-     * @ORM\ManyToOne(targetEntity="BastSys\LanguageBundle\Entity\Language\Language", inversedBy="mainSpeakingCountries", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="BastSys\LocaleBundle\Entity\Language\Language", inversedBy="mainSpeakingCountries", fetch="EXTRA_LAZY")
      */
     private $mainLanguage;
 

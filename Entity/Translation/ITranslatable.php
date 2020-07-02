@@ -1,14 +1,14 @@
 <?php
 
-namespace BastSys\LanguageBundle\Entity\Translation;
+namespace BastSys\LocaleBundle\Entity\Translation;
 
-use BastSys\LanguageBundle\Repository\LanguageRepository;
-use BastSys\LanguageBundle\Service\ILocaleService;
+use BastSys\LocaleBundle\Repository\LanguageRepository;
+use BastSys\LocaleBundle\Service\ILocaleService;
 use BastSys\UtilsBundle\Entity\Identification\IIdentifiableEntity;
 
 /**
  * Interface ITranslatable
- * @package BastSys\LanguageBundle\Entity
+ * @package BastSys\LocaleBundle\Entity
  * @author  mirkl
  */
 interface ITranslatable extends IIdentifiableEntity

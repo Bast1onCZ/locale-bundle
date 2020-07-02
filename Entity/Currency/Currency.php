@@ -1,13 +1,13 @@
 <?php
 
-namespace BastSys\LanguageBundle\Entity\Currency;
+namespace BastSys\LocaleBundle\Entity\Currency;
 
 use BastSys\UtilsBundle\Entity\Identification\IIdentifiableEntity;
 use BastSys\UtilsBundle\Model\IEquatable;
 
 /**
  * Class Currency
- * @package BastSys\LanguageBundle\Entity\Currency
+ * @package BastSys\LocaleBundle\Entity\Currency
  * @author  mirkl
  *
  * @ORM\Entity()

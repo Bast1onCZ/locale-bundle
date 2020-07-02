@@ -1,14 +1,14 @@
 <?php
 
-namespace BastSys\LanguageBundle\Entity\Translation;
+namespace BastSys\LocaleBundle\Entity\Translation;
 
-use BastSys\LanguageBundle\Entity\Language\Language;
+use BastSys\LocaleBundle\Entity\Language\Language;
 use BastSys\UtilsBundle\Entity\Identification\AUuidEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class ATranslation
- * @package BastSys\LanguageBundle\Entity\Translation
+ * @package BastSys\LocaleBundle\Entity\Translation
  * @author  mirkl
  *
  * @ORM\MappedSuperclass()
@@ -22,7 +22,7 @@ abstract class ATranslation extends AUuidEntity implements ITranslation
 
     /**
      * @var Language
-     * @ORM\ManyToOne(targetEntity="BastSys\LanguageBundle\Entity\Language\Language", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="BastSys\LocaleBundle\Entity\Language\Language", fetch="EXTRA_LAZY")
      */
     protected $language;
 

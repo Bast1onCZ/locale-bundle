@@ -1,14 +1,14 @@
 <?php
 
-namespace BastSys\LanguageBundle\Repository;
+namespace BastSys\LocaleBundle\Repository;
 
-use BastSys\LanguageBundle\Entity\Language\Language;
+use BastSys\LocaleBundle\Entity\Language\Language;
 use BastSys\UtilsBundle\Repository\AEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class LanguageRepository
- * @package BastSys\LanguageBundle\Repository
+ * @package BastSys\LocaleBundle\Repository
  * @author mirkl
  */
 class LanguageRepository extends AEntityRepository

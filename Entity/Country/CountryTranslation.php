@@ -1,13 +1,13 @@
 <?php
 
-namespace BastSys\LanguageBundle\Entity\Country;
+namespace BastSys\LocaleBundle\Entity\Country;
 
-use BastSys\LanguageBundle\Entity\Translation\ATranslation;
+use BastSys\LocaleBundle\Entity\Translation\ATranslation;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class CountryTranslation
- * @package BastSys\LanguageBundle\Entity\Country
+ * @package BastSys\LocaleBundle\Entity\Country
  * @author mirkl
  *
  * @ORM\Entity()

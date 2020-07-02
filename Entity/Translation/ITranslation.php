@@ -1,12 +1,12 @@
 <?php
 
-namespace BastSys\LanguageBundle\Entity\Translation;
+namespace BastSys\LocaleBundle\Entity\Translation;
 
-use BastSys\LanguageBundle\Entity\Language\Language;
+use BastSys\LocaleBundle\Entity\Language\Language;
 
 /**
  * Interface ITranslation
- * @package BastSys\LanguageBundle\Entity
+ * @package BastSys\LocaleBundle\Entity
  * @author  mirkl
  */
 interface ITranslation

@@ -1,17 +1,17 @@
 <?php
 
-namespace BastSys\LanguageBundle\Service;
+namespace BastSys\LocaleBundle\Service;
 
-use BastSys\LanguageBundle\Entity\Country\Country;
-use BastSys\LanguageBundle\Entity\Language\Language;
-use BastSys\LanguageBundle\Exception\UnknownLocaleException;
-use BastSys\LanguageBundle\Repository\CountryRepository;
-use BastSys\LanguageBundle\Repository\LanguageRepository;
-use BastSys\LanguageBundle\Structure\Locale;
+use BastSys\LocaleBundle\Entity\Country\Country;
+use BastSys\LocaleBundle\Entity\Language\Language;
+use BastSys\LocaleBundle\Exception\UnknownLocaleException;
+use BastSys\LocaleBundle\Repository\CountryRepository;
+use BastSys\LocaleBundle\Repository\LanguageRepository;
+use BastSys\LocaleBundle\Structure\Locale;
 
 /**
  * Class LocaleService
- * @package BastSys\LanguageBundle\Service
+ * @package BastSys\LocaleBundle\Service
  * @author mirkl
  */
 class LocaleService implements ILocaleService

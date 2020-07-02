@@ -1,14 +1,14 @@
 <?php
 
-namespace BastSys\LanguageBundle\Service;
+namespace BastSys\LocaleBundle\Service;
 
-use BastSys\LanguageBundle\Entity\Country\Country;
-use BastSys\LanguageBundle\Entity\Language\Language;
-use BastSys\LanguageBundle\Exception\UnknownLocaleException;
+use BastSys\LocaleBundle\Entity\Country\Country;
+use BastSys\LocaleBundle\Entity\Language\Language;
+use BastSys\LocaleBundle\Exception\UnknownLocaleException;
 
 /**
  * Interface ILocaleService
- * @package BastSys\LanguageBundle\Service\Localisation
+ * @package BastSys\LocaleBundle\Service\Localisation
  * @author  mirkl
  */
 interface ILocaleService

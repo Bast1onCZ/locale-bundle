@@ -3,10 +3,10 @@ services:
         public: true
 
     bastsys.language_bundle.repository.language:
-        class: BastSys\LanguageBundle\Repository\LanguageRepository
+        class: BastSys\LocaleBundle\Repository\LanguageRepository
         arguments:
             - '@doctrine.orm.entity_manager'
     bastsys.language_bundle.repository.country:
-        class: BastSys\LanguageBundle\Repository\CountryRepository
+        class: BastSys\LocaleBundle\Repository\CountryRepository
         arguments:
             - '@doctrine.orm.entity_manager'
