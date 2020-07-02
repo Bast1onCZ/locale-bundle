@@ -5,6 +5,11 @@ namespace BastSys\LanguageBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
+/**
+ * Class LocaleConfiguration
+ * @package BastSys\LanguageBundle\DependencyInjection
+ * @author mirkl
+ */
 class LocaleConfiguration implements ConfigurationInterface
 {
 
@@ -15,7 +20,7 @@ class LocaleConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder('language');
+        $builder = new TreeBuilder('locale');
 
         // @formatter:off
         $builder->getRootNode()
