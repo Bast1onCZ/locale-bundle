@@ -1,0 +1,69 @@
+<?php
+
+namespace BastSys\LanguageBundle\Entity\Translation;
+
+use BastSys\LanguageBundle\Entity\Language\Language;
+use BastSys\UtilsBundle\Entity\Identification\AUuidEntity;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Class ATranslation
+ * @package BastSys\LanguageBundle\Entity\Translation
+ * @author  mirkl
+ *
+ * @ORM\MappedSuperclass()
+ */
+abstract class ATranslation extends AUuidEntity implements ITranslation
+{
+    /**
+     * @var ITranslatable
+     */
+    protected $translatable;
+
+    /**
+     * @var Language
+     * @ORM\ManyToOne(targetEntity="App\CoreBundle\Entity\Localisation\Language", fetch="EXTRA_LAZY")
+     */
+    protected $language;
+
+    /**
+     * ATranslation constructor.
+     * @throws \Exception
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale(): string
+    {
+        return $this->language->getCode();
+    }
+
+    /**
+     * @return Language
+     */
+    public function getLanguage(): Language
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param Language $language
+     */
+    public function setLanguage(Language $language): void
+    {
+        $this->language = $language;
+    }
+
+    /**
+     * @param ITranslatable $translatable
+     */
+    public function setTranslatable(ITranslatable $translatable): void
+    {
+        $this->translatable = $translatable;
+    }
+}

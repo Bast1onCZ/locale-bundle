@@ -1,0 +1,8 @@
+services:
+    bastsys.language_bundle.service.locale:
+        class: BastSys\LanguageBundle\Service\LocaleService
+        arguments:
+            - '@bastsys.language_bundle.repository.language'
+            - '@bastsys.language_bundle.repository.country'
+            - '%bastsys.language_bundle.locale.default%'
+            - '@translator.default'

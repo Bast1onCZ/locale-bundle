@@ -1,0 +1,8 @@
+services:
+    bastsys.language_bundle.event_listener.translation:
+        class: App\CoreBundle\EventListener\TranslationListener
+        arguments:
+            - '@bastsys.language_bundle.service.locale'
+            - '@bastsys.language_bundle.repository.language'
+        tags:
+            - {name: doctrine.event_subscriber}
