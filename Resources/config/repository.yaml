@@ -4,6 +4,7 @@ services:
 
     bastsys.language_bundle.repository.language:
         class: BastSys\LocaleBundle\Repository\LanguageRepository
+        lazy: true
         arguments:
             - '@doctrine.orm.entity_manager'
     bastsys.language_bundle.repository.country:

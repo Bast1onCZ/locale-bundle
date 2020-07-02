@@ -6,6 +6,7 @@ use BastSys\LocaleBundle\Entity\Translation\ITranslatable;
 use BastSys\LocaleBundle\Entity\Translation\ITranslation;
 use BastSys\LocaleBundle\Repository\LanguageRepository;
 use BastSys\LocaleBundle\Service\ILocaleService;
+use Doctrine\Bundle\DoctrineBundle\EventSubscriber\EventSubscriberInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Events;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
  * @package BastSys\LocaleBundle\EventListener
  * @author mirkl
  */
-class TranslationListener
+class TranslationListener implements EventSubscriberInterface
 {
     /**
      * @var ILocaleService
