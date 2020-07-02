@@ -11,8 +11,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class CountryRepository
- * @package App\CoreBundle\Model\Localisation
- * @author  mirkl
+ * @package BastSys\LanguageBundle\Repository
+ * @author mirkl
  */
 class CountryRepository extends AEntityRepository implements IFetchAllRepository
 {

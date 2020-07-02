@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CoreBundle\EventListener;
+namespace BastSys\LocaleBundle\EventListener;
 
 use BastSys\LanguageBundle\Entity\Translation\ITranslatable;
 use BastSys\LanguageBundle\Entity\Translation\ITranslation;
@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 /**
  * Class TranslationListener
- * @package App\CoreBundle\EventListener
+ * @package BastSys\LocaleBundle\EventListener
  * @author mirkl
  */
 class TranslationListener

@@ -22,7 +22,7 @@ abstract class ATranslation extends AUuidEntity implements ITranslation
 
     /**
      * @var Language
-     * @ORM\ManyToOne(targetEntity="App\CoreBundle\Entity\Localisation\Language", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="BastSys\LanguageBundle\Entity\Language\Language", fetch="EXTRA_LAZY")
      */
     protected $language;
 

@@ -8,8 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class LanguageRepository
- * @package App\CoreBundle\Model\Localisation
- * @author  mirkl
+ * @package BastSys\LanguageBundle\Repository
+ * @author mirkl
  */
 class LanguageRepository extends AEntityRepository
 {

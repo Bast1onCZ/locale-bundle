@@ -11,8 +11,8 @@ use BastSys\LanguageBundle\Structure\Locale;
 
 /**
  * Class LocaleService
- * @package App\CoreBundle\Service\Localisation
- * @author  mirkl
+ * @package BastSys\LanguageBundle\Service
+ * @author mirkl
  */
 class LocaleService implements ILocaleService
 {

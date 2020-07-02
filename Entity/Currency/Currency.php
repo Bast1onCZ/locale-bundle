@@ -7,7 +7,7 @@ use BastSys\UtilsBundle\Model\IEquatable;
 
 /**
  * Class Currency
- * @package App\CoreBundle\Entity\Localisation
+ * @package BastSys\LanguageBundle\Entity\Currency
  * @author  mirkl
  *
  * @ORM\Entity()

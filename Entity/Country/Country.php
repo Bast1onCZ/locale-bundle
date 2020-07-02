@@ -46,13 +46,13 @@ class Country implements IIdentifiableEntity, IEquatable, ITranslatable
 
     /**
      * @var Currency
-     * @ORM\ManyToOne(targetEntity="App\CoreBundle\Entity\Localisation\Currency", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="BastSys\LanguageBundle\Entity\Currency\Currency", fetch="EXTRA_LAZY")
      */
     private $currency;
 
     /**
      * @var Language
-     * @ORM\ManyToOne(targetEntity="App\CoreBundle\Entity\Localisation\Language", inversedBy="mainSpeakingCountries", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="BastSys\LanguageBundle\Entity\Language\Language", inversedBy="mainSpeakingCountries", fetch="EXTRA_LAZY")
      */
     private $mainLanguage;
 

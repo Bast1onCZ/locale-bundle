@@ -1,6 +1,6 @@
 services:
     bastsys.language_bundle.event_listener.translation:
-        class: App\CoreBundle\EventListener\TranslationListener
+        class: BastSys\LocaleBundle\EventListener\TranslationListener
         arguments:
             - '@bastsys.language_bundle.service.locale'
             - '@bastsys.language_bundle.repository.language'

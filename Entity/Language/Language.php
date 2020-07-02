@@ -31,7 +31,7 @@ class Language
 
     /**
      * @var ArrayCollection|Country[]
-     * @ORM\OneToMany(targetEntity="App\CoreBundle\Entity\Localisation\Country", mappedBy="mainLanguage")
+     * @ORM\OneToMany(targetEntity="BastSys\LanguageBundle\Entity\Country\Country", mappedBy="mainLanguage")
      */
     private $mainSpeakingCountries;
 
