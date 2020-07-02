@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  * @package BastSys\LanguageBundle\DependencyInjection
  * @author mirkl
  */
-class LanguageExtension extends Extension
+class LocaleExtension extends Extension
 {
     /**
      * Loads a specific configuration.
@@ -24,7 +24,7 @@ class LanguageExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         // load configuration
-        $config = $this->processConfiguration(new LanguageConfiguration(), $configs);
+        $config = $this->processConfiguration(new LocaleConfiguration(), $configs);
         $container->setParameter('bastsys.language_bundle.locale.default', $config['locale']['default']);
 
         // load services

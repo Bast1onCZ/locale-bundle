@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @package BastSys\LanguageBundle
  * @author mirkl
  */
-class LanguageBundle extends Bundle
+class LocaleBundle extends Bundle
 {
 
 }
