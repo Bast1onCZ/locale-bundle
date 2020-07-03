@@ -1,0 +1,8 @@
+services:
+    bastsys.locale_bundle.command.entity.translate:
+        class: BastSys\LocaleBundle\Command\TranslateCommand
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@bastsys.language_bundle.repository.language'
+        tags:
+            - {name: console.command}

@@ -36,14 +36,6 @@ abstract class ATranslation extends AUuidEntity implements ITranslation
     }
 
     /**
-     * @return string
-     */
-    public function getLocale(): string
-    {
-        return $this->language->getCode();
-    }
-
-    /**
      * @return Language
      */
     public function getLanguage(): Language

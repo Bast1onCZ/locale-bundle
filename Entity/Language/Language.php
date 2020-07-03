@@ -4,6 +4,8 @@ namespace BastSys\LocaleBundle\Entity\Language;
 
 use BastSys\LocaleBundle\Entity\Country\Country;
 use BastSys\LocaleBundle\Entity\Translation\TTranslatable;
+use BastSys\UtilsBundle\Entity\Identification\IIdentifiableEntity;
+use BastSys\UtilsBundle\Model\IEquatable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="bastsys_locale_bundle__language")
  */
-class Language
+class Language implements IIdentifiableEntity, IEquatable
 {
     use TTranslatable {
         __construct as initTranslatable;
@@ -119,5 +121,14 @@ class Language
     public function getMainSpeakingCountries(): array
     {
         return $this->mainSpeakingCountries->toArray();
+    }
+
+    /**
+     * @param IEquatable $comparable
+     * @return bool
+     */
+    public function equals($comparable): bool
+    {
+        return $comparable instanceof Language && $this->id === $comparable->getId();
     }
 }

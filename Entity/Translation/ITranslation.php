@@ -12,11 +12,6 @@ use BastSys\LocaleBundle\Entity\Language\Language;
 interface ITranslation
 {
     /**
-     * @return string
-     */
-    function getLocale(): string;
-
-    /**
      * @return Language
      */
     function getLanguage(): Language;
