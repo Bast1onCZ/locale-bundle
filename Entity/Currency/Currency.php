@@ -4,6 +4,7 @@ namespace BastSys\LocaleBundle\Entity\Currency;
 
 use BastSys\UtilsBundle\Entity\Identification\IIdentifiableEntity;
 use BastSys\UtilsBundle\Model\IEquatable;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Currency
@@ -26,7 +27,7 @@ class Currency implements IIdentifiableEntity, IEquatable
      * @var string - pattern for the price show - e.g. '{value} Kč' || '€ {value}' || '$ {value}'
      * @ORM\Column(type="string", length=255)
      */
-    private $pattern;
+    private $format;
 
     /**
      * @return string
@@ -47,17 +48,17 @@ class Currency implements IIdentifiableEntity, IEquatable
     /**
      * @return string
      */
-    public function getPattern(): string
+    public function getFormat(): string
     {
-        return $this->pattern;
+        return $this->format;
     }
 
     /**
-     * @param string $pattern
+     * @param string $format
      */
-    public function setPattern(string $pattern): void
+    public function setFormat(string $format): void
     {
-        $this->pattern = $pattern;
+        $this->format = $format;
     }
 
     /**
@@ -68,7 +69,7 @@ class Currency implements IIdentifiableEntity, IEquatable
     public function getPriceString(float $price): string
     {
         $priceStr = number_format($price, 2, ',', ' ');
-        $priceStrWithCurrency = str_replace('{value}', $priceStr, $this->pattern);
+        $priceStrWithCurrency = str_replace('{value}', $priceStr, $this->format);
 
         return $priceStrWithCurrency;
     }

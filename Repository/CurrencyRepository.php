@@ -1,27 +1,27 @@
 <?php
+declare(strict_types=1);
 
 namespace BastSys\LocaleBundle\Repository;
 
-use BastSys\LocaleBundle\Entity\Language\Language;
+use BastSys\LocaleBundle\Entity\Currency\Currency;
 use BastSys\UtilsBundle\Exception\Entity\EntityNotFoundByIdException;
 use BastSys\UtilsBundle\Repository\AEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
- * Class LanguageRepository
+ * Class CurrencyRepository
  * @package BastSys\LocaleBundle\Repository
  * @author mirkl
  */
-class LanguageRepository extends AEntityRepository
+class CurrencyRepository extends AEntityRepository
 {
     /**
-     * LanguageRepository constructor.
-     *
-     * @param EntityManagerInterface $entityManager
+     * CurrencyRepository constructor.
+     * @param EntityManagerInterface|null $entityManager
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager = null)
     {
-        parent::__construct(Language::class, $entityManager);
+        parent::__construct(Currency::class, $entityManager);
     }
 
     /**
@@ -32,13 +32,13 @@ class LanguageRepository extends AEntityRepository
      */
     public function findById(string $id, bool $notFoundError = false): ?object
     {
-        $language = $this->getObjectRepository()->findOneBy([
+        $currency = $this->getObjectRepository()->findOneBy([
             'code' => $id
         ]);
-        if (!$language && $notFoundError) {
-            throw new EntityNotFoundByIdException(Language::class, $id);
+        if (!$currency && $notFoundError) {
+            throw new EntityNotFoundByIdException(Currency::class, $id);
         }
 
-        return $language;
+        return $currency;
     }
 }

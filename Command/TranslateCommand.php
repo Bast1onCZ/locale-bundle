@@ -124,9 +124,14 @@ class TranslateCommand extends Command
                 continue;
             }
 
-            dump('Translating entity:',
-                $entity
-            );
+            $output->writeln("Translating entity '$translatableClass' with:");
+            $translatableMeta = $this->entityManager->getClassMetadata($translatableClass);
+            foreach ($translatableMeta->getFieldNames() as $fieldName) {
+                $getter = Strings::getGetterName($fieldName);
+                if (method_exists($translatableClass, $getter)) {
+                    $output->writeln(" - $fieldName: " . $entity->$getter());
+                }
+            }
 
             foreach ($translations as $translation) {
                 foreach ($translationFieldNames as $translationFieldName) {
@@ -134,19 +139,30 @@ class TranslateCommand extends Command
                     $value = $translation->$getter();
 
                     if (!$value) {
+                        $translationLanguageCode = $translation->getLanguage()->getCode();
                         $translationValue = $questionHelper->ask($input, $output,
-                            new Question("$translationFieldName ($translation)")
+                            new Question("$translationFieldName ($translationLanguageCode): ")
                         );
                         $setter = Strings::getSetterName($translationFieldName);
+                        $output->writeln("Setting: $translationValue");
                         $translation->$setter($translationValue);
                     }
                 }
             }
 
             $output->writeln('Entity is now fully translated');
+            $output->writeln('--------------------------------');
         }
 
-        $output->writeln('Translated all entities');
+        if ($this->entityManager->isOpen()) {
+            $this->entityManager->flush();
+        }
+
+        if (count($entities) > 0) {
+            $output->writeln('Translated all entities');
+        } else {
+            $output->writeln('There is no entity with missing translation');
+        }
 
         return 0;
     }

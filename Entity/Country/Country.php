@@ -193,6 +193,14 @@ class Country implements IIdentifiableEntity, IEquatable, ITranslatable
     }
 
     /**
+     * @param Currency $currency
+     */
+    public function setCurrency(Currency $currency): void
+    {
+        $this->currency = $currency;
+    }
+
+    /**
      * @param IEquatable $comparable
      * @return bool
      */

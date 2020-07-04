@@ -3,6 +3,7 @@
 namespace BastSys\LocaleBundle\Entity\Language;
 
 use BastSys\LocaleBundle\Entity\Country\Country;
+use BastSys\LocaleBundle\Entity\Translation\ITranslatable;
 use BastSys\LocaleBundle\Entity\Translation\TTranslatable;
 use BastSys\UtilsBundle\Entity\Identification\IIdentifiableEntity;
 use BastSys\UtilsBundle\Model\IEquatable;
@@ -17,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="bastsys_locale_bundle__language")
  */
-class Language implements IIdentifiableEntity, IEquatable
+class Language implements IIdentifiableEntity, IEquatable, ITranslatable
 {
     use TTranslatable {
         __construct as initTranslatable;
@@ -26,22 +27,16 @@ class Language implements IIdentifiableEntity, IEquatable
     /**
      * @var string language code
      *
-     * @ORM\Column(name="id", type="string", length=10)
+     * @ORM\Column(name="id", length=10)
      * @ORM\Id()
      */
-    private $id;
+    private $code;
 
     /**
      * @var ArrayCollection|Country[]
      * @ORM\OneToMany(targetEntity="BastSys\LocaleBundle\Entity\Country\Country", mappedBy="mainLanguage")
      */
     private $mainSpeakingCountries;
-
-    /**
-     * @var string[]
-     * @ORM\Column(type="simple_array", length=255)
-     */
-    private $platforms;
 
     /**
      * Language constructor.
@@ -58,31 +53,15 @@ class Language implements IIdentifiableEntity, IEquatable
      */
     public function getId(): string
     {
-        return $this->id;
+        return $this->code;
     }
 
     /**
-     * @param string $id
+     * @param string $code
      */
-    public function setCode(string $id): void
+    public function setCode(string $code): void
     {
-        $this->id = $id;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getPlatforms(): array
-    {
-        return $this->platforms;
-    }
-
-    /**
-     * @param string[] $platforms
-     */
-    public function setPlatforms(array $platforms): void
-    {
-        $this->platforms = $platforms;
+        $this->code = $code;
     }
 
     /**
@@ -112,7 +91,7 @@ class Language implements IIdentifiableEntity, IEquatable
      */
     public function getCode(): string
     {
-        return $this->id;
+        return $this->code;
     }
 
     /**
@@ -129,6 +108,6 @@ class Language implements IIdentifiableEntity, IEquatable
      */
     public function equals($comparable): bool
     {
-        return $comparable instanceof Language && $this->id === $comparable->getId();
+        return $comparable instanceof Language && $this->code === $comparable->getId();
     }
 }

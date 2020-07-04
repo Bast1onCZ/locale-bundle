@@ -41,7 +41,7 @@ interface ITranslatable extends IIdentifiableEntity
     function getTranslation(string $languageCode = null): ?ITranslation;
 
     /**
-     * @return array
+     * @return ITranslation[]
      */
     function getTranslations(): array;
 

@@ -11,3 +11,7 @@ services:
         class: BastSys\LocaleBundle\Repository\CountryRepository
         arguments:
             - '@doctrine.orm.entity_manager'
+    bastsys.language_bundle.repository.currency:
+        class: BastSys\LocaleBundle\Repository\CurrencyRepository
+        arguments:
+            - '@doctrine.orm.entity_manager'

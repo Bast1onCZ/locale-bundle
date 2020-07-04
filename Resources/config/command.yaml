@@ -1,8 +1,22 @@
 services:
+    _defaults:
+        tags:
+            - {name: console.command}
+
+    batsys.locale_bundle.command.entity.currency.add:
+        class: BastSys\LocaleBundle\Command\Currency\AddCurrencyCommand
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@bastsys.language_bundle.repository.currency'
+            - '@bastsys.locale_bundle.command.entity.translate'
+    bastsys.locale_bundle.command.entity.language.add:
+        class: BastSys\LocaleBundle\Command\Language\AddLanguageCommand
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@bastsys.language_bundle.repository.language'
+            - '@bastsys.locale_bundle.command.entity.translate'
     bastsys.locale_bundle.command.entity.translate:
         class: BastSys\LocaleBundle\Command\TranslateCommand
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@bastsys.language_bundle.repository.language'
-        tags:
-            - {name: console.command}
