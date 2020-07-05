@@ -68,6 +68,7 @@ class TranslateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $translatableClass = $input->getArgument('entityClass');
+        $output->writeln("Got: $translatableClass");
         $translationClass = $translatableClass . 'Translation';
 
         $repo = $this->entityManager->getRepository($translatableClass);
