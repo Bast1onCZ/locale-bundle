@@ -2,7 +2,7 @@
   "name": "bastsys/locale-bundle",
   "description": "Language and translations for symfony entities",
   "type": "symfony-bundle",
-  "license": "Proprietary",
+  "license": "proprietary",
   "authors": [
     {
       "name": "Miroslav Klobáska",
