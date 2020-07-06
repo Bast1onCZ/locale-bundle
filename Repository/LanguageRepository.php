@@ -27,7 +27,7 @@ class LanguageRepository extends AEntityRepository
     /**
      * @param string $id
      * @param bool $notFoundError
-     * @return object|null
+     * @return Language|null
      * @throws EntityNotFoundByIdException
      */
     public function findById(string $id, bool $notFoundError = false): ?object

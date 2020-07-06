@@ -32,6 +32,6 @@ class CountryFlagService
     {
         $alpha2 = $country->getAlpha2();
 
-        return $this->packages->getUrl("@LocaleBundle/Resources/public/flag/$alpha2.png");
+        return $this->packages->getUrl("bundles/locale/flag/$alpha2.png");
     }
 }

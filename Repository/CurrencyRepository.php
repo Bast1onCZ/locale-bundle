@@ -27,7 +27,7 @@ class CurrencyRepository extends AEntityRepository
     /**
      * @param string $id
      * @param bool $notFoundError
-     * @return object|null
+     * @return Currency|null
      * @throws EntityNotFoundByIdException
      */
     public function findById(string $id, bool $notFoundError = false): ?object

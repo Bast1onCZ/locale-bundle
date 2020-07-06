@@ -3,13 +3,20 @@ services:
         tags:
             - {name: console.command}
 
-    batsys.locale_bundle.command.entity.currency.add:
+    bastsys.locale_bundle.command.country.add:
+        class: BastSys\LocaleBundle\Command\Country\AddCountryCommand
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@bastsys.language_bundle.repository.country'
+            - '@bastsys.language_bundle.repository.currency'
+            - '@bastsys.language_bundle.repository.language'
+    bastsys.locale_bundle.command.currency.add:
         class: BastSys\LocaleBundle\Command\Currency\AddCurrencyCommand
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@bastsys.language_bundle.repository.currency'
             - '@bastsys.locale_bundle.command.entity.translate'
-    bastsys.locale_bundle.command.entity.language.add:
+    bastsys.locale_bundle.command.language.add:
         class: BastSys\LocaleBundle\Command\Language\AddLanguageCommand
         arguments:
             - '@doctrine.orm.entity_manager'
