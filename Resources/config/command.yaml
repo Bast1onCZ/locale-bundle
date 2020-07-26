@@ -10,6 +10,8 @@ services:
             - '@bastsys.language_bundle.repository.country'
             - '@bastsys.language_bundle.repository.currency'
             - '@bastsys.language_bundle.repository.language'
+            - '@doctrine.migrations.dependency_factory'
+            - '@doctrine_migrations.execute_command'
     bastsys.locale_bundle.command.currency.add:
         class: BastSys\LocaleBundle\Command\Currency\AddCurrencyCommand
         arguments:
