@@ -33,3 +33,5 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@bastsys.locale_bundle.repository.language'
+            - '@doctrine.migrations.dependency_factory'
+            - '@doctrine_migrations.execute_command'
