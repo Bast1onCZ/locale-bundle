@@ -58,4 +58,13 @@ abstract class ATranslation extends AUuidEntity implements ITranslation
     {
         $this->translatable = $translatable;
     }
+
+    /**
+     * @return ITranslatable
+     */
+    public function getTranslatable(): ITranslatable
+    {
+        return $this->translatable;
+    }
+
 }

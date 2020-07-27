@@ -8,10 +8,14 @@ use BastSys\LocaleBundle\Entity\Translation\ITranslation;
 use BastSys\LocaleBundle\Repository\LanguageRepository;
 use BastSys\UtilsBundle\Model\Arrays;
 use BastSys\UtilsBundle\Model\Strings;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
@@ -35,18 +39,24 @@ class TranslateCommand extends Command
      * @var LanguageRepository
      */
     private LanguageRepository $languageRepo;
+    private DependencyFactory $dependencyFactory;
+    private ExecuteCommand $executeCommand;
 
     /**
      * TranslateCommand constructor.
      * @param EntityManagerInterface $entityManager
      * @param LanguageRepository $languageRepo
+     * @param DependencyFactory $dependencyFactory
+     * @param ExecuteCommand $executeCommand
      */
-    public function __construct(EntityManagerInterface $entityManager, LanguageRepository $languageRepo)
+    public function __construct(EntityManagerInterface $entityManager, LanguageRepository $languageRepo, DependencyFactory $dependencyFactory, ExecuteCommand $executeCommand)
     {
         parent::__construct();
 
         $this->entityManager = $entityManager;
         $this->languageRepo = $languageRepo;
+        $this->dependencyFactory = $dependencyFactory;
+        $this->executeCommand = $executeCommand;
     }
 
     /**
@@ -56,6 +66,7 @@ class TranslateCommand extends Command
     {
         $this->setDescription('Starts a session to translate all entities of one entity class');
         $this->addArgument('entityClass', InputArgument::REQUIRED, 'Which entity class instanced should be translated');
+        $this->addOption('no-migration', null, InputOption::VALUE_NONE, 'Does not create a migration');
     }
 
     /**
@@ -64,10 +75,13 @@ class TranslateCommand extends Command
      * @return int
      * @throws \Doctrine\ORM\Mapping\MappingException
      * @throws \ReflectionException
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $translatableClass = $input->getArgument('entityClass');
+        $noMigration = $input->getOption('no-migration');
+
         $output->writeln("Got: $translatableClass");
         $translationClass = $translatableClass . 'Translation';
 
@@ -102,6 +116,10 @@ class TranslateCommand extends Command
 
         $questionHelper = $this->getHelper('question');
 
+        /** @var ITranslation[] $translationFieldUpdateChanges */
+        $translationFieldUpdateChanges = [];
+        /** @var ITranslation[] $createdTranslations */
+        $createdTranslations = [];
         foreach ($entities as $entity) {
             $translations = $entity->getTranslations();
             $emptyLanguages = array_filter($languages, function (Language $language) use ($translations) {
@@ -110,7 +128,10 @@ class TranslateCommand extends Command
                 });
             });
             foreach ($emptyLanguages as $emptyLanguage) {
-                $translations[] = $entity->getTranslation($emptyLanguage->getCode());
+                // create new translation
+                $newTranslation =  $entity->getTranslation($emptyLanguage->getCode());
+                $translations[] = $newTranslation;
+                $createdTranslations[] = $newTranslation;
             }
 
             if (
@@ -141,12 +162,22 @@ class TranslateCommand extends Command
 
                     if (!$value) {
                         $translationLanguageCode = $translation->getLanguage()->getCode();
-                        $translationValue = $questionHelper->ask($input, $output,
+                        $newValue = $questionHelper->ask($input, $output,
                             new Question("$translationFieldName ($translationLanguageCode): ")
                         );
+                        $getter = Strings::getGetterName($translationFieldName);
                         $setter = Strings::getSetterName($translationFieldName);
-                        $output->writeln("Setting: $translationValue");
-                        $translation->$setter($translationValue);
+                        $output->writeln("Setting: $newValue");
+
+                        $prevValue = $translation->$getter();
+                        $translation->$setter($newValue);
+
+                        $translationUpdateChanges = $translationFieldUpdateChanges[$translation->getId()];
+                        if(!$translationUpdateChanges) {
+                            $translationUpdateChanges = ($translationFieldUpdateChanges[$translation->getId()] = []);
+                        }
+
+                        $translationUpdateChanges[$translationFieldName] = [$prevValue, $newValue];
                     }
                 }
             }
@@ -155,8 +186,50 @@ class TranslateCommand extends Command
             $output->writeln('--------------------------------');
         }
 
-        if ($this->entityManager->isOpen()) {
-            $this->entityManager->flush();
+        if($this->entityManager->isOpen()) {
+            if ($noMigration) {
+                // no migration, just flush
+                $this->entityManager->flush();
+            } else {
+                // create migration
+                $tableName = $this->entityManager->getClassMetadata($translationClass)->getTableName();
+                $upSql = "";
+                $downSql = "";
+                foreach ($createdTranslations as $createdTranslation) {
+                    $id = $createdTranslation->getId();
+                    $languageId = $createdTranslation->getLanguage()->getId();
+                    $translatableId = $createdTranslation->getTranslatable()->getId();
+                    $upSql .= "INSERT INTO `$tableName` (`id`, `language_id`, `translatable_id`) VALUES ('$id', '$languageId', '$translatableId');";
+                    $downSql = "DELETE FROM `$tableName` WHERE `id` = '$id';"
+                        . $downSql;
+                }
+                foreach($translationFieldUpdateChanges as $id => $translationUpdateChanges) {
+                    $setUpParts = [];
+                    foreach ($translationUpdateChanges as $fieldName => $valueChange) {
+                        $newValue = $valueChange[1];
+                        $setUpParts[] = "`$fieldName` = '$newValue'";
+                    }
+                    $setUpString = join(', ', $setUpParts);
+                    $upSql .= "UPDATE `$tableName` SET $setUpString WHERE `id` = '$id';";
+
+                    $setDownParts = [];
+                    foreach ($translationUpdateChanges as $fieldName => $valueChange) {
+                        $prevValue = $valueChange[0];
+                        $setUpParts[] = "`$fieldName` = '$prevValue'";
+                    }
+                    $setDownString = join(', ', $setDownParts);
+                    $downSql = "UPDATE `$tableName` SET $setDownString WHERE `id` = '$id'"
+                        . $downSql;
+                }
+
+                $fqcn = $this->dependencyFactory->getClassNameGenerator()->generateClassName(
+                    key($this->dependencyFactory->getConfiguration()->getMigrationDirectories())
+                );
+                $this->dependencyFactory->getMigrationGenerator()->generateMigration($fqcn, $upSql, $downSql);
+
+                // execute migration
+                $this->executeCommand->run(new ArrayInput([]), $output);
+            }
         }
 
         if (count($entities) > 0) {

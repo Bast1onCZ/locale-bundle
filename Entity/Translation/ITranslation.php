@@ -3,13 +3,14 @@
 namespace BastSys\LocaleBundle\Entity\Translation;
 
 use BastSys\LocaleBundle\Entity\Language\Language;
+use BastSys\UtilsBundle\Entity\Identification\IIdentifiableEntity;
 
 /**
  * Interface ITranslation
  * @package BastSys\LocaleBundle\Entity
  * @author  mirkl
  */
-interface ITranslation
+interface ITranslation extends IIdentifiableEntity
 {
     /**
      * @return Language
@@ -25,4 +26,9 @@ interface ITranslation
      * @param ITranslatable $translatable
      */
     function setTranslatable(ITranslatable $translatable): void;
+
+    /**
+     * @return ITranslatable
+     */
+    function getTranslatable(): ITranslatable;
 }
