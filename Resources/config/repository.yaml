@@ -2,16 +2,16 @@ services:
     _defaults:
         public: true
 
-    bastsys.language_bundle.repository.language:
+    bastsys.locale_bundle.repository.language:
         class: BastSys\LocaleBundle\Repository\LanguageRepository
         lazy: true
         arguments:
             - '@doctrine.orm.entity_manager'
-    bastsys.language_bundle.repository.country:
+    bastsys.locale_bundle.repository.country:
         class: BastSys\LocaleBundle\Repository\CountryRepository
         arguments:
             - '@doctrine.orm.entity_manager'
-    bastsys.language_bundle.repository.currency:
+    bastsys.locale_bundle.repository.currency:
         class: BastSys\LocaleBundle\Repository\CurrencyRepository
         arguments:
             - '@doctrine.orm.entity_manager'

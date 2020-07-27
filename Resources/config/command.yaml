@@ -7,25 +7,25 @@ services:
         class: BastSys\LocaleBundle\Command\Country\AddCountryCommand
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@bastsys.language_bundle.repository.country'
-            - '@bastsys.language_bundle.repository.currency'
-            - '@bastsys.language_bundle.repository.language'
+            - '@bastsys.locale_bundle.repository.country'
+            - '@bastsys.locale_bundle.repository.currency'
+            - '@bastsys.locale_bundle.repository.language'
             - '@doctrine.migrations.dependency_factory'
             - '@doctrine_migrations.execute_command'
     bastsys.locale_bundle.command.currency.add:
         class: BastSys\LocaleBundle\Command\Currency\AddCurrencyCommand
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@bastsys.language_bundle.repository.currency'
+            - '@bastsys.locale_bundle.repository.currency'
             - '@bastsys.locale_bundle.command.entity.translate'
     bastsys.locale_bundle.command.language.add:
         class: BastSys\LocaleBundle\Command\Language\AddLanguageCommand
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@bastsys.language_bundle.repository.language'
+            - '@bastsys.locale_bundle.repository.language'
             - '@bastsys.locale_bundle.command.entity.translate'
     bastsys.locale_bundle.command.entity.translate:
         class: BastSys\LocaleBundle\Command\TranslateCommand
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@bastsys.language_bundle.repository.language'
+            - '@bastsys.locale_bundle.repository.language'
