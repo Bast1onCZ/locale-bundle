@@ -46,7 +46,13 @@ class AddCountryCommand extends Command
      * @var LanguageRepository
      */
     private LanguageRepository $languageRepository;
+    /**
+     * @var DependencyFactory
+     */
     private DependencyFactory $dependencyFactory;
+    /**
+     * @var ExecuteCommand
+     */
     private ExecuteCommand $migrationExecuteCommand;
 
     /**
