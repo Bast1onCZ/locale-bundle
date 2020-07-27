@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace BastSys\LocaleBundle\Command\Language;
 
 use BastSys\LocaleBundle\Command\TranslateCommand;
-use BastSys\LocaleBundle\Entity\Currency\Currency;
 use BastSys\LocaleBundle\Entity\Language\Language;
 use BastSys\LocaleBundle\Repository\LanguageRepository;
 use Doctrine\Migrations\DependencyFactory;
