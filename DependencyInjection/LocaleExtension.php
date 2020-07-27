@@ -25,7 +25,7 @@ class LocaleExtension extends Extension
     {
         // load configuration
         $config = $this->processConfiguration(new LocaleConfiguration(), $configs);
-        $container->setParameter('bastsys.language_bundle.locale.default', $config['locale']['default']);
+        $container->setParameter('bastsys.locale_bundle.locale.default', $config['locale']['default']);
 
         // load services
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
