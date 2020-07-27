@@ -3,10 +3,16 @@
 namespace BastSys\LocaleBundle\Command\Currency;
 
 use BastSys\LocaleBundle\Command\TranslateCommand;
+use BastSys\LocaleBundle\Entity\Country\Country;
 use BastSys\LocaleBundle\Entity\Currency\Currency;
 use BastSys\LocaleBundle\Repository\CurrencyRepository;
+use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Generator\Generator;
+use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\ORM\EntityManagerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,21 +37,36 @@ class AddCurrencyCommand extends Command
      * @var CurrencyRepository
      */
     private CurrencyRepository $currencyRepository;
+    /**
+     * @var TranslateCommand
+     */
     private TranslateCommand $translateCommand;
+    /**
+     * @var DependencyFactory
+     */
+    private DependencyFactory $dependencyFactory;
+    /**
+     * @var ExecuteCommand
+     */
+    private ExecuteCommand $executeCommand;
 
     /**
      * AddCurrencyCommand constructor.
      * @param EntityManagerInterface $entityManager
      * @param CurrencyRepository $currencyRepository
      * @param TranslateCommand $translateCommand
+     * @param DependencyFactory $dependencyFactory
+     * @param ExecuteCommand $executeCommand
      */
-    public function __construct(EntityManagerInterface $entityManager, CurrencyRepository $currencyRepository, TranslateCommand $translateCommand)
+    public function __construct(EntityManagerInterface $entityManager, CurrencyRepository $currencyRepository, TranslateCommand $translateCommand, DependencyFactory $dependencyFactory, ExecuteCommand $executeCommand)
     {
         parent::__construct();
 
         $this->entityManager = $entityManager;
         $this->currencyRepository = $currencyRepository;
         $this->translateCommand = $translateCommand;
+        $this->dependencyFactory = $dependencyFactory;
+        $this->executeCommand = $executeCommand;
     }
 
     /**
@@ -79,12 +100,17 @@ class AddCurrencyCommand extends Command
             throw new \InvalidArgumentException("Currency format does not contain '{value}' variable");
         }
 
-        $currency = new Currency();
-        $currency->setCode($code);
-        $currency->setFormat($format);
+        $tableName = $this->entityManager->getClassMetadata(Currency::class)->getTableName();
+        $fqcn = $this->dependencyFactory->getClassNameGenerator()->generateClassName(
+            key($this->dependencyFactory->getConfiguration()->getMigrationDirectories())
+        );
 
-        $this->entityManager->persist($currency);
-        $this->entityManager->flush();
+        $id = Uuid::uuid4();
+        (new Generator($this->dependencyFactory->getConfiguration()))->generateMigration($fqcn,
+            "INSERT INTO `$tableName` (`code`, `format`) VALUES ('$code', '$format')",
+            "DELETE FROM `$tableName` WHERE `id` = '$id'");
+
+        $this->executeCommand->run(new ArrayInput(['up' => $fqcn]), $output);
 
         $output->writeln("Currency with code '$code' and format '$format' was created");
 
