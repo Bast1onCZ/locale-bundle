@@ -7,13 +7,10 @@ use BastSys\LocaleBundle\Entity\Country\Country;
 use BastSys\LocaleBundle\Repository\CountryRepository;
 use BastSys\LocaleBundle\Repository\CurrencyRepository;
 use BastSys\LocaleBundle\Repository\LanguageRepository;
-use Doctrine\Migrations\DependencyFactory;
-use Doctrine\Migrations\Generator\Generator;
-use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
+use BastSys\UtilsBundle\Service\MigrationGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -47,13 +44,9 @@ class AddCountryCommand extends Command
      */
     private LanguageRepository $languageRepository;
     /**
-     * @var DependencyFactory
+     * @var MigrationGenerator
      */
-    private DependencyFactory $dependencyFactory;
-    /**
-     * @var ExecuteCommand
-     */
-    private ExecuteCommand $migrationExecuteCommand;
+    private MigrationGenerator $migrationGenerator;
 
     /**
      * AddCountryCommand constructor.
@@ -61,17 +54,9 @@ class AddCountryCommand extends Command
      * @param CountryRepository $countryRepository
      * @param CurrencyRepository $currencyRepository
      * @param LanguageRepository $languageRepository
-     * @param DependencyFactory $dependencyFactory
-     * @param ExecuteCommand $migrationExecuteCommand
+     * @param MigrationGenerator $migrationGenerator
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        CountryRepository $countryRepository,
-        CurrencyRepository $currencyRepository,
-        LanguageRepository $languageRepository,
-        DependencyFactory $dependencyFactory,
-        ExecuteCommand $migrationExecuteCommand
-    )
+    public function __construct(EntityManagerInterface $entityManager, CountryRepository $countryRepository, CurrencyRepository $currencyRepository, LanguageRepository $languageRepository, MigrationGenerator $migrationGenerator)
     {
         parent::__construct();
 
@@ -79,8 +64,7 @@ class AddCountryCommand extends Command
         $this->countryRepository = $countryRepository;
         $this->currencyRepository = $currencyRepository;
         $this->languageRepository = $languageRepository;
-        $this->dependencyFactory = $dependencyFactory;
-        $this->migrationExecuteCommand = $migrationExecuteCommand;
+        $this->migrationGenerator = $migrationGenerator;
     }
 
     /**
@@ -130,19 +114,17 @@ class AddCountryCommand extends Command
         $currency = $this->currencyRepository->findById($currencyCode, true);
         $language = $this->languageRepository->findById($mainLanguageCode, true);
 
-        $tableName = $this->entityManager->getClassMetadata(Country::class)->getTableName();
-        $fqcn = $this->dependencyFactory->getClassNameGenerator()->generateClassName(
-            key($this->dependencyFactory->getConfiguration()->getMigrationDirectories())
-        );
+        $tableName = $this->migrationGenerator->getTableName(Country::class);
 
         $id = Uuid::uuid4();
         $currencyId = $currency->getId();
         $mainLanguageId = $language->getId();
-        (new Generator($this->dependencyFactory->getConfiguration()))->generateMigration($fqcn,
-            "INSERT INTO `$tableName` (`id`, `alpha2`, `alpha3`, `code`, `currency_id`, `main_language_id`) VALUES ('$id', '$alpha2', '$alpha3', '$code', '$currencyId', '$mainLanguageId')",
-            "DELETE FROM `$tableName` WHERE `id` = '$id'");
 
-        $this->migrationExecuteCommand->run(new ArrayInput(['up' => $fqcn]), $output);
+        $this->migrationGenerator->addUpSql("INSERT INTO `$tableName` (`id`, `alpha2`, `alpha3`, `code`, `currency_id`, `main_language_id`) VALUES ('$id', '$alpha2', '$alpha3', '$code', '$currencyId', '$mainLanguageId')");
+        $this->migrationGenerator->addDownSql("DELETE FROM `$tableName` WHERE `id` = '$id'");
+
+        $this->migrationGenerator->generate();
+        $this->migrationGenerator->execute($output);
 
         $output->writeln("Created country with alpha2 '$alpha2'");
 

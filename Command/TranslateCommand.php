@@ -8,11 +8,9 @@ use BastSys\LocaleBundle\Entity\Translation\ITranslation;
 use BastSys\LocaleBundle\Repository\LanguageRepository;
 use BastSys\UtilsBundle\Model\Arrays;
 use BastSys\UtilsBundle\Model\Strings;
-use Doctrine\Migrations\DependencyFactory;
-use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
+use BastSys\UtilsBundle\Service\MigrationGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -39,24 +37,24 @@ class TranslateCommand extends Command
      * @var LanguageRepository
      */
     private LanguageRepository $languageRepo;
-    private DependencyFactory $dependencyFactory;
-    private ExecuteCommand $executeCommand;
+    /**
+     * @var MigrationGenerator
+     */
+    private MigrationGenerator $migrationGenerator;
 
     /**
      * TranslateCommand constructor.
      * @param EntityManagerInterface $entityManager
      * @param LanguageRepository $languageRepo
-     * @param DependencyFactory $dependencyFactory
-     * @param ExecuteCommand $executeCommand
+     * @param MigrationGenerator $migrationGenerator
      */
-    public function __construct(EntityManagerInterface $entityManager, LanguageRepository $languageRepo, DependencyFactory $dependencyFactory, ExecuteCommand $executeCommand)
+    public function __construct(EntityManagerInterface $entityManager, LanguageRepository $languageRepo, MigrationGenerator $migrationGenerator)
     {
         parent::__construct();
 
         $this->entityManager = $entityManager;
         $this->languageRepo = $languageRepo;
-        $this->dependencyFactory = $dependencyFactory;
-        $this->executeCommand = $executeCommand;
+        $this->migrationGenerator = $migrationGenerator;
     }
 
     /**
@@ -192,17 +190,18 @@ class TranslateCommand extends Command
                 $this->entityManager->flush();
             } else {
                 // create migration
-                $tableName = $this->entityManager->getClassMetadata($translationClass)->getTableName();
-                $upSql = "";
-                $downSql = "";
+                $tableName = $this->migrationGenerator->getTableName($translationClass);
+                $upSql = [];
+                $downDeleteSql = [];
                 foreach ($createdTranslations as $createdTranslation) {
                     $id = $createdTranslation->getId();
                     $languageId = $createdTranslation->getLanguage()->getId();
                     $translatableId = $createdTranslation->getTranslatable()->getId();
-                    $upSql .= "INSERT INTO `$tableName` (`id`, `language_id`, `translatable_id`) VALUES ('$id', '$languageId', '$translatableId');";
-                    $downSql = "DELETE FROM `$tableName` WHERE `id` = '$id';"
-                        . $downSql;
+                    $upSql[] = "INSERT INTO `$tableName` (`id`, `language_id`, `translatable_id`) VALUES ('$id', '$languageId', '$translatableId')";
+                    $downDeleteSql[] = "DELETE FROM `$tableName` WHERE `id` = '$id'";
                 }
+
+                $downUpdateSql = [];
                 foreach($translationFieldUpdateChanges as $id => $translationUpdateChanges) {
                     $setUpParts = [];
                     foreach ($translationUpdateChanges as $fieldName => $valueChange) {
@@ -210,7 +209,7 @@ class TranslateCommand extends Command
                         $setUpParts[] = "`$fieldName` = '$newValue'";
                     }
                     $setUpString = join(', ', $setUpParts);
-                    $upSql .= "UPDATE `$tableName` SET $setUpString WHERE `id` = '$id';";
+                    $upSql[] = "UPDATE `$tableName` SET $setUpString WHERE `id` = '$id';";
 
                     $setDownParts = [];
                     foreach ($translationUpdateChanges as $fieldName => $valueChange) {
@@ -218,17 +217,21 @@ class TranslateCommand extends Command
                         $setUpParts[] = "`$fieldName` = '$prevValue'";
                     }
                     $setDownString = join(', ', $setDownParts);
-                    $downSql = "UPDATE `$tableName` SET $setDownString WHERE `id` = '$id'"
-                        . $downSql;
+                    $downUpdateSql[] = "UPDATE `$tableName` SET $setDownString WHERE `id` = '$id'";
                 }
 
-                $fqcn = $this->dependencyFactory->getClassNameGenerator()->generateClassName(
-                    key($this->dependencyFactory->getConfiguration()->getMigrationDirectories())
-                );
-                $this->dependencyFactory->getMigrationGenerator()->generateMigration($fqcn, $upSql, $downSql);
+                foreach ($upSql as $ln) {
+                    $this->migrationGenerator->addUpSql($ln);
+                }
+                foreach($downUpdateSql as $ln) {
+                    $this->migrationGenerator->addDownSql($ln);
+                }
+                foreach ($downDeleteSql as $ln) {
+                    $this->migrationGenerator->addDownSql($ln);
+                }
 
-                // execute migration
-                $this->executeCommand->run(new ArrayInput([]), $output);
+                $this->migrationGenerator->generate();
+                $this->migrationGenerator->execute($output);
             }
         }
 
