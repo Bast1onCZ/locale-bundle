@@ -9,7 +9,6 @@ use BastSys\LocaleBundle\Repository\CurrencyRepository;
 use BastSys\LocaleBundle\Repository\LanguageRepository;
 use BastSys\UtilsBundle\Service\MigrationGenerator;
 use Doctrine\ORM\EntityManagerInterface;
-use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -116,12 +115,11 @@ class AddCountryCommand extends Command
 
         $tableName = $this->migrationGenerator->getTableName(Country::class);
 
-        $id = Uuid::uuid4();
         $currencyId = $currency->getId();
         $mainLanguageId = $language->getId();
 
-        $this->migrationGenerator->addUpSql("INSERT INTO `$tableName` (`id`, `alpha2`, `alpha3`, `code`, `currency_id`, `main_language_id`) VALUES ('$id', '$alpha2', '$alpha3', '$code', '$currencyId', '$mainLanguageId')");
-        $this->migrationGenerator->addDownSql("DELETE FROM `$tableName` WHERE `id` = '$id'");
+        $this->migrationGenerator->addUpSql("INSERT INTO `$tableName` (`id`, `alpha3`, `code`, `currency_id`, `main_language_id`) VALUES ('$alpha2', '$alpha3', '$code', '$currencyId', '$mainLanguageId')");
+        $this->migrationGenerator->addDownSql("DELETE FROM `$tableName` WHERE `id` = '$alpha2'");
 
         $this->migrationGenerator->generate();
         $this->migrationGenerator->execute($output);
