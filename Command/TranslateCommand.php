@@ -114,7 +114,7 @@ class TranslateCommand extends Command
 
         $questionHelper = $this->getHelper('question');
 
-        /** @var ITranslation[] $translationFieldUpdateChanges */
+        /** @var array $translationFieldUpdateChanges */
         $translationFieldUpdateChanges = [];
         /** @var ITranslation[] $createdTranslations */
         $createdTranslations = [];
@@ -170,12 +170,15 @@ class TranslateCommand extends Command
                         $prevValue = $translation->$getter();
                         $translation->$setter($newValue);
 
-                        $translationUpdateChanges = @$translationFieldUpdateChanges[$translation->getId()];
-                        if(!$translationUpdateChanges) {
-                            $translationUpdateChanges = ($translationFieldUpdateChanges[$translation->getId()] = []);
+                        $translationUpdateChanges = null;
+                        if(!isset($translationFieldUpdateChanges[$translation->getId()])) {
+                            $translationFieldUpdateChanges[$translation->getId()] = [];
                         }
 
+                        $translationUpdateChanges = $translationFieldUpdateChanges[$translation->getId()];
                         $translationUpdateChanges[$translationFieldName] = [$prevValue, $newValue];
+
+                        $translationFieldUpdateChanges[$translation->getId()] = $translationUpdateChanges;
                     }
                 }
             }
@@ -215,7 +218,7 @@ class TranslateCommand extends Command
                         $setDownParts = [];
                         foreach ($translationUpdateChanges as $fieldName => $valueChange) {
                             $prevValue = $valueChange[0];
-                            $setUpParts[] = "`$fieldName` = '$prevValue'";
+                            $setDownParts[] = "`$fieldName` = ". (is_string($prevValue) ? "'$prevValue'" : 'NULL');
                         }
                         $setDownString = join(', ', $setDownParts);
                         $downUpdateSql[] = "UPDATE `$tableName` SET $setDownString WHERE `id` = '$id'";
