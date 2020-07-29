@@ -170,7 +170,7 @@ class TranslateCommand extends Command
                         $prevValue = $translation->$getter();
                         $translation->$setter($newValue);
 
-                        $translationUpdateChanges = $translationFieldUpdateChanges[$translation->getId()];
+                        $translationUpdateChanges = @$translationFieldUpdateChanges[$translation->getId()];
                         if(!$translationUpdateChanges) {
                             $translationUpdateChanges = ($translationFieldUpdateChanges[$translation->getId()] = []);
                         }
@@ -203,21 +203,23 @@ class TranslateCommand extends Command
 
                 $downUpdateSql = [];
                 foreach($translationFieldUpdateChanges as $id => $translationUpdateChanges) {
-                    $setUpParts = [];
-                    foreach ($translationUpdateChanges as $fieldName => $valueChange) {
-                        $newValue = $valueChange[1];
-                        $setUpParts[] = "`$fieldName` = '$newValue'";
-                    }
-                    $setUpString = join(', ', $setUpParts);
-                    $upSql[] = "UPDATE `$tableName` SET $setUpString WHERE `id` = '$id';";
+                    if(count($translationUpdateChanges)) {
+                        $setUpParts = [];
+                        foreach ($translationUpdateChanges as $fieldName => $valueChange) {
+                            $newValue = $valueChange[1];
+                            $setUpParts[] = "`$fieldName` = '$newValue'";
+                        }
+                        $setUpString = join(', ', $setUpParts);
+                        $upSql[] = "UPDATE `$tableName` SET $setUpString WHERE `id` = '$id';";
 
-                    $setDownParts = [];
-                    foreach ($translationUpdateChanges as $fieldName => $valueChange) {
-                        $prevValue = $valueChange[0];
-                        $setUpParts[] = "`$fieldName` = '$prevValue'";
+                        $setDownParts = [];
+                        foreach ($translationUpdateChanges as $fieldName => $valueChange) {
+                            $prevValue = $valueChange[0];
+                            $setUpParts[] = "`$fieldName` = '$prevValue'";
+                        }
+                        $setDownString = join(', ', $setDownParts);
+                        $downUpdateSql[] = "UPDATE `$tableName` SET $setDownString WHERE `id` = '$id'";
                     }
-                    $setDownString = join(', ', $setDownParts);
-                    $downUpdateSql[] = "UPDATE `$tableName` SET $setDownString WHERE `id` = '$id'";
                 }
 
                 foreach ($upSql as $ln) {
