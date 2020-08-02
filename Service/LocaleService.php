@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace BastSys\LocaleBundle\Service;
 
@@ -21,14 +22,15 @@ class LocaleService implements ILocaleService
     /** @var CountryRepository */
     private $countryRepo;
 
+    private Locale $defaultLocale;
     /** @var Locale */
-    private $currentLocale;
+    private Locale $currentLocale;
     /** @var bool */
-    private $hasUpdatedCurrentLocale = false;
+    private bool $hasUpdatedCurrentLocale = false;
     /** @var Language|null */
-    private $currentLanguage = null;
+    private ?Language $currentLanguage = null;
     /** @var Country|null */
-    private $currentCountry = null;
+    private ?Country $currentCountry = null;
 
     /**
      * LocaleService constructor.
@@ -41,7 +43,16 @@ class LocaleService implements ILocaleService
     {
         $this->languageRepo = $languageRepo;
         $this->countryRepo = $countryRepo;
-        $this->currentLocale = new Locale($defaultLocale);
+        $this->defaultLocale = new Locale($defaultLocale);
+        $this->currentLocale = $this->defaultLocale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultLocale(): string
+    {
+        return (string) $this->defaultLocale;
     }
 
     /**
@@ -68,7 +79,7 @@ class LocaleService implements ILocaleService
      */
     public function getCurrentLocale(): string
     {
-        return $this->currentLocale;
+        return (string) $this->currentLocale;
     }
 
     /**
@@ -157,5 +168,4 @@ class LocaleService implements ILocaleService
     {
         return $this->hasUpdatedCurrentLocale;
     }
-
 }

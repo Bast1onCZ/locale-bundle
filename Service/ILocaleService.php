@@ -16,58 +16,62 @@ interface ILocaleService
     /**
      * @return string
      */
-    function getCurrentLocale(): string;
+    public function getDefaultLocale(): string;
+    /**
+     * @return string
+     */
+    public function getCurrentLocale(): string;
 
     /**
      * @return Language
      */
-    function getCurrentLanguage(): Language;
+    public function getCurrentLanguage(): Language;
 
     /**
      * @return Country
      */
-    function getCurrentCountry(): Country;
+    public function getCurrentCountry(): Country;
 
     /**
      * @param string $locale
      *
      * @throws UnknownLocaleException
      */
-    function setCurrentLocale(string $locale): void;
+    public function setCurrentLocale(string $locale): void;
 
     /**
      * @return Language[]
      */
-    function getAvailableLanguages(): array;
+    public function getAvailableLanguages(): array;
 
     /**
      * @return Country[]
      */
-    function getAvailableCountries(): array;
+    public function getAvailableCountries(): array;
 
     /**
      * @param string $locale
      *
      * @return bool
      */
-    function isValidLocale(string $locale): bool;
+    public function isValidLocale(string $locale): bool;
 
     /**
      * @param string $languageCode
      *
      * @return bool
      */
-    function isValidLanguageCode(string $languageCode): bool;
+    public function isValidLanguageCode(string $languageCode): bool;
 
     /**
      * @param string $countryCode
      *
      * @return bool
      */
-    function isValidCountryCode(string $countryCode): bool;
+    public function isValidCountryCode(string $countryCode): bool;
 
     /**
      * @return bool
      */
-    function hasUpdatedCurrentLocale(): bool;
+    public function hasUpdatedCurrentLocale(): bool;
 }

@@ -61,6 +61,22 @@ trait TTranslatable
             // try assign preferred translation field value
             $translatedValue = $preferredTranslation->$fieldGetter();
         }
+
+        if(!$translatedValue) {
+            $defaultLocale = new Locale($this->localeService->getDefaultLocale());
+            $defaultLanguageCode = $defaultLocale->getLanguageCode();
+
+            if($defaultLanguageCode !== $preferredLanguageCode) {
+                $defaultTranslation = $this->translations->get($defaultLanguageCode);
+
+                if ($defaultTranslation) {
+                    // try assign preferred translation field value
+                    $translatedValue = $defaultTranslation->$fieldGetter();
+                }
+            }
+        }
+
+
         if (!$translatedValue) {
             // try every translation for a valid field value
             foreach ($this->translations as $translation) {
