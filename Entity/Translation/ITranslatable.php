@@ -26,10 +26,13 @@ interface ITranslatable extends IIdentifiableEntity
     function createTranslation(string $languageCode): ITranslation;
 
     /**
-     * @param string $fieldName
+     * Gets translated field. First tries preferredLocale (if not defined currentLocale is used). If field value is not
+     * defined for this translation or translation is not found, searches for any valid value (non empty string).
+     *
+     * @param string      $fieldName
      * @param string|null $preferredLanguageCode
      *
-     * @return mixed
+     * @return string|string[]|null
      */
     function getTranslatedField(string $fieldName, string $preferredLanguageCode = null);
 

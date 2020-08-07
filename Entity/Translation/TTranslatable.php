@@ -44,12 +44,12 @@ trait TTranslatable
      * Gets translated field. First tries preferredLocale (if not defined currentLocale is used). If field value is not
      * defined for this translation or translation is not found, searches for any valid value (non empty string).
      *
-     * @param string $fieldName
+     * @param string      $fieldName
      * @param string|null $preferredLanguageCode
      *
-     * @return string|null
+     * @return string|string[]|null
      */
-    function getTranslatedField(string $fieldName, string $preferredLanguageCode = null): ?string
+    function getTranslatedField(string $fieldName, string $preferredLanguageCode = null)
     {
         $preferredLanguageCode = $preferredLanguageCode ?? (new Locale($this->localeService->getCurrentLocale()))->getLanguageCode();
 
@@ -62,7 +62,7 @@ trait TTranslatable
             $translatedValue = $preferredTranslation->$fieldGetter();
         }
 
-        if(!$translatedValue) {
+        if(empty($translatedValue)) {
             $defaultLocale = new Locale($this->localeService->getDefaultLocale());
             $defaultLanguageCode = $defaultLocale->getLanguageCode();
 
@@ -77,7 +77,7 @@ trait TTranslatable
         }
 
 
-        if (!$translatedValue) {
+        if (empty($translatedValue)) {
             // try every translation for a valid field value
             foreach ($this->translations as $translation) {
                 $translatedValue = $translation->$fieldGetter();
