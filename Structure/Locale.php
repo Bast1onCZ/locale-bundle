@@ -2,6 +2,8 @@
 
 namespace BastSys\LocaleBundle\Structure;
 
+use BastSys\LocaleBundle\Entity\Country\Country;
+use BastSys\LocaleBundle\Entity\Language\Language;
 use BastSys\UtilsBundle\Model\IEquatable;
 
 /**
@@ -15,6 +17,18 @@ class Locale implements IEquatable
      *
      */
     private const LOCALE_REGEXP = '/^([a-z]{2})_([A-Z]{2})$/';
+
+    /**
+     * @param Language $language
+     * @param Country $country
+     * @return Locale
+     */
+    public static function createFromLanguageAndCountry(Language $language, Country $country): Locale {
+        $languageCode = $language->getCode();
+        $alpha2 = $country->getAlpha2();
+
+        return new Locale($languageCode .'_'. $alpha2);
+    }
 
     /** @var string */
     private $languageCode;
