@@ -3,6 +3,7 @@
 namespace BastSys\LocaleBundle\Entity\Currency;
 
 use BastSys\UtilsBundle\Entity\Identification\IIdentifiableEntity;
+use BastSys\UtilsBundle\Model\ICurrency;
 use BastSys\UtilsBundle\Model\IEquatable;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="bastsys_locale_bundle__currency")
  */
-class Currency implements IIdentifiableEntity, IEquatable
+class Currency implements IIdentifiableEntity, IEquatable, ICurrency
 {
     /**
      * @var string
