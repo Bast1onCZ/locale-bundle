@@ -4,7 +4,6 @@ namespace BastSys\LocaleBundle\EventListener\Country;
 
 use BastSys\LocaleBundle\Entity\Country\Country;
 use BastSys\LocaleBundle\Service\CountryFlagService;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
  * Class CountryFeedListener
@@ -28,28 +27,26 @@ class CountryFeedListener
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param Country $country
      */
-    public function postLoad(LifecycleEventArgs $args)
+    public function postLoad(Country $country)
     {
-        $this->feedCountry($args->getEntity());
+        $this->feedCountry($country);
     }
 
     /**
-     * @param object $entity
+     * @param Country $country
      */
-    private function feedCountry(object $entity)
+    public function postPersist(Country $country)
     {
-        if ($entity instanceof Country) {
-            $entity->feed($this->countryFlagService);
-        }
+        $this->feedCountry($country);
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param Country $entity
      */
-    public function postPersist(LifecycleEventArgs $args)
+    private function feedCountry(Country $entity)
     {
-        $this->feedCountry($args->getEntity());
+        $entity->feed($this->countryFlagService);
     }
 }
