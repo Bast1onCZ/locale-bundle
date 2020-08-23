@@ -4,6 +4,7 @@ namespace BastSys\LocaleBundle\Service;
 
 use BastSys\LocaleBundle\Entity\Country\Country;
 use Symfony\Component\Asset\Packages;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class CountryFlagService
@@ -14,14 +15,17 @@ use Symfony\Component\Asset\Packages;
 class CountryFlagService
 {
     private Packages $packages;
+    private RequestStack $requestStack;
 
     /**
      * CountryFlagService constructor.
      * @param Packages $packages
+     * @param RequestStack $requestStack
      */
-    public function __construct(Packages $packages)
+    public function __construct(Packages $packages, RequestStack $requestStack)
     {
         $this->packages = $packages;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -32,6 +36,9 @@ class CountryFlagService
     {
         $alpha2 = $country->getAlpha2();
 
-        return $this->packages->getUrl("bundles/locale/flag/$alpha2.png");
+        $baseUrl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost();
+        $packagePath =  $this->packages->getUrl("bundles/locale/flag/$alpha2.png");
+
+        return $baseUrl . $packagePath;
     }
 }

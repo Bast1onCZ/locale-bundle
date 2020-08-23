@@ -10,3 +10,4 @@ services:
         class: BastSys\LocaleBundle\Service\CountryFlagService
         arguments:
             - '@assets.packages'
+            - '@request_stack'
