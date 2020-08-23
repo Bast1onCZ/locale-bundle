@@ -27,25 +27,9 @@ class CountryFeedListener
     }
 
     /**
-     * @param Country $country
-     */
-    public function postLoad(Country $country)
-    {
-        $this->feedCountry($country);
-    }
-
-    /**
-     * @param Country $country
-     */
-    public function postPersist(Country $country)
-    {
-        $this->feedCountry($country);
-    }
-
-    /**
      * @param Country $entity
      */
-    private function feedCountry(Country $entity)
+    public function feedCountry(Country $entity)
     {
         $entity->feed($this->countryFlagService);
     }
