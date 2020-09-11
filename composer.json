@@ -22,5 +22,8 @@
     "psr-4": {
       "BastSys\\LocaleBundle\\": ""
     }
+  },
+  "require-dev": {
+    "doctrine/doctrine-fixtures-bundle": "^3.3"
   }
 }

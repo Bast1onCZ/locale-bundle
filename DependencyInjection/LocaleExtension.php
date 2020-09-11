@@ -30,6 +30,7 @@ class LocaleExtension extends Extension
         // load services
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('command.yaml');
+        $loader->load('dataFixture.yaml');
         $loader->load('eventListener.yaml');
         $loader->load('repository.yaml');
         $loader->load('service.yaml');
